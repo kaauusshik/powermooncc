@@ -1,0 +1,74 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║              PAYMENT CATEGORY ADDED TO EXPENSES! ✅                  ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+✅ WHAT WAS DONE:
+
+1. Updated Code:
+   • File: frontend/src/lib/fmt.js (Line 35)
+   • Added "payment" to EXPENSE_CATEGORIES array
+   • Now shows 10 categories instead of 9
+
+2. Created Database Migration:
+   • File: supabase/add_payment_category.sql
+   • Updates constraint to allow "payment" category
+
+3. Documentation:
+   • File: PAYMENT_CATEGORY_ADDED.md
+   • Complete guide with testing steps
+
+📋 NEW EXPENSE CATEGORIES LIST (10 TOTAL):
+
+   1. labor
+   2. material
+   3. contractor
+   4. transportation
+   5. payment          ← ✨ NEW!
+   6. food
+   7. travel
+   8. hotel
+   9. equipment
+   10. other
+
+🚀 TO APPLY THE CHANGES:
+
+   Step 1: Update Database
+   ----------------------
+   1. Open Supabase SQL Editor
+   2. Copy content from: supabase/add_payment_category.sql
+   3. Paste and run
+   4. Wait for success
+
+   Step 2: Restart App
+   -------------------
+   cd frontend
+   npm start
+
+   Step 3: Test
+   ------------
+   1. Go to Expenses page
+   2. Click "+ Add Expense"
+   3. Check Category dropdown
+   4. ✅ "Payment" should appear (5th option)
+
+💡 USE "PAYMENT" CATEGORY FOR:
+   • Direct vendor payments
+   • Supplier advance payments
+   • Miscellaneous business payments
+   • One-time service payments
+   • Utility payments
+
+⚠️ IMPORTANT:
+   You MUST run the database migration (Step 1) or you'll get an error
+   when trying to save expenses with "payment" category.
+
+📁 FILES CHANGED:
+   ✅ frontend/src/lib/fmt.js (modified)
+   ✅ supabase/add_payment_category.sql (created)
+   ✅ PAYMENT_CATEGORY_ADDED.md (created)
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  Status: READY! Just run the database migration and restart app.    ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Completed: 2026-09-03 15:39 UTC

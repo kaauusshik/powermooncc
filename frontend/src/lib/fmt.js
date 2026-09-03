@@ -32,7 +32,7 @@ export const titleCase = (s) =>
   String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
 export const PAYMENT_METHODS = ["cash", "upi", "neft", "bank_transfer", "card", "cheque", "other"];
-export const EXPENSE_CATEGORIES = ["labor", "material", "contractor", "transportation", "food", "travel", "hotel", "equipment", "other"];
+export const EXPENSE_CATEGORIES = ["labor", "material", "contractor", "transportation", "payment", "food", "travel", "hotel", "equipment", "other"];
 export const WORKER_TYPES = ["Mason", "Helper", "Plumber", "Electrician", "Carpenter", "Painter", "Tile Worker", "Driver", "Other"];
 export const UNITS = ["bag", "cft", "nos", "kg", "sqft", "litre", "mtr", "ton", "brass", "trip"];
 export const PROJECT_STATUS = ["planning", "active", "on_hold", "completed", "archived"];
