@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Setup - Power Moon Construction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; }
+        .content { padding: 30px; }
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .step h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        .step ol { margin-left: 20px; margin-top: 10px; }
+        .step li { margin-bottom: 8px; line-height: 1.6; }
+        .code-block {
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #667eea;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .alert-success {
+            background: #c6f6d5;
+            border-left: 4px solid #38a169;
+            color: #22543d;
+        }
+        .alert-warning {
+            background: #feebc8;
+            border-left: 4px solid #dd6b20;
+            color: #7c2d12;
+        }
+        .alert-info {
+            background: #bee3f8;
+            border-left: 4px solid #3182ce;
+            color: #1e4e8c;
+        }
+        .status { margin-top: 20px; }
+        a { color: #667eea; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ Power Moon Construction</h1>
+            <p>Supabase Setup Assistant</p>
+        </div>
+
+        <div class="content">
+            <div class="alert alert-warning">
+                <strong>⚠️ Setup Required:</strong> Your application needs to connect to Supabase database to manage categories and other data.
+            </div>
+
+            <div class="step">
+                <h2>Step 1: Create Supabase Project</h2>
+                <ol>
+                    <li>Go to <a href="https://supabase.com" target="_blank">https://supabase.com</a></li>
+                    <li>Click <strong>"Start your project"</strong> (or sign in if you have an account)</li>
+                    <li>Create a new organization (free tier is fine)</li>
+                    <li>Click <strong>"New Project"</strong></li>
+                    <li>Fill in:
+                        <ul>
+                            <li><strong>Name:</strong> powermoon-construction</li>
+                            <li><strong>Database Password:</strong> Choose a strong password (save it!)</li>
+                            <li><strong>Region:</strong> Select closest to your location</li>
+                            <li><strong>Pricing Plan:</strong> Free</li>
+                        </ul>
+                    </li>
+                    <li>Click <strong>"Create new project"</strong></li>
+                    <li>⏳ Wait 2-3 minutes for setup to complete</li>
+                </ol>
+            </div>
+
+            <div class="step">
+                <h2>Step 2: Get API Credentials</h2>
+                <ol>
+                    <li>In your Supabase project dashboard, click <strong>⚙️ Settings</strong> (bottom left)</li>
+                    <li>Click <strong>API</strong> in the settings menu</li>
+                    <li>You'll see two values needed:</li>
+                </ol>
+                <div class="input-group">
+                    <label>Project URL:</label>
+                    <input type="text" id="supabaseUrl" placeholder="https://xxxxxxxxxxxxx.supabase.co">
+                    <small style="color: #718096; display: block; margin-top: 5px;">
+                        Copy from: Settings → API → Project URL
+                    </small>
+                </div>
+                <div class="input-group">
+                    <label>Anon/Public Key:</label>
+                    <input type="text" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                    <small style="color: #718096; display: block; margin-top: 5px;">
+                        Copy from: Settings → API → Project API keys → anon public
+                    </small>
+                </div>
+                <button class="btn" onclick="generateEnvFile()">📝 Generate .env File</button>
+                <div id="envOutput" style="margin-top: 15px;"></div>
+            </div>
+
+            <div class="step">
+                <h2>Step 3: Save .env File</h2>
+                <ol>
+                    <li>After clicking "Generate .env File" above, copy the generated content</li>
+                    <li>Open your code editor</li>
+                    <li>Create a new file: <code>frontend/.env</code></li>
+                    <li>Paste the generated content</li>
+                    <li>Save the file</li>
+                </ol>
+                <div class="alert alert-info">
+                    <strong>💡 Tip:</strong> The .env file must be in the <code>frontend/</code> folder, not the root folder!
+                </div>
+            </div>
+
+            <div class="step">
+                <h2>Step 4: Run Database Migration</h2>
+                <ol>
+                    <li>In Supabase dashboard, click <strong>🗂️ SQL Editor</strong> (left sidebar)</li>
+                    <li>Click <strong>"New Query"</strong></li>
+                    <li>Open the file: <code>supabase/migration.sql</code> in your project</li>
+                    <li>Copy the ENTIRE file content (it's long - about 880 lines)</li>
+                    <li>Paste into the Supabase SQL Editor</li>
+                    <li>Click <strong>"Run"</strong> or press <kbd>Ctrl</kbd>+<kbd>Enter</kbd></li>
+                    <li>Wait for <strong>"Success. No rows returned"</strong> message</li>
+                    <li>This creates all database tables, including category tables</li>
+                </ol>
+                <div class="alert alert-success">
+                    <strong>✅ What this does:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Creates all database tables</li>
+                        <li>Sets up Row Level Security (RLS) policies</li>
+                        <li>Adds 8 default work categories</li>
+                        <li>Adds 10 material categories</li>
+                        <li>Adds 16 default materials</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <h2>Step 5: Start the Application</h2>
+                <div class="code-block">
+cd frontend<br>
+npm start
+                </div>
+                <p style="margin-top: 10px;">The app will open at <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
+            </div>
+
+            <div class="step">
+                <h2>Step 6: Test Categories</h2>
+                <ol>
+                    <li><strong>Sign Up:</strong> Create your account (first user becomes Owner automatically)</li>
+                    <li><strong>Login:</strong> Sign in with your credentials</li>
+                    <li><strong>Go to Settings:</strong> Click Settings in the navigation menu</li>
+                    <li><strong>Open Master Data:</strong> Click the "Master Data" tab</li>
+                    <li>You should now see:
+                        <ul>
+                            <li>✅ Work Categories (with 8 default categories)</li>
+                            <li>✅ Material Categories (with 10 default categories)</li>
+                            <li>✅ Clients section (empty initially)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Adding:</strong> Click "+ Add" next to any category section</li>
+                    <li>Enter a name and click Save</li>
+                    <li>The new category should appear immediately!</li>
+                </ol>
+            </div>
+
+            <div class="status">
+                <div class="alert alert-info">
+                    <strong>📚 Need Help?</strong> Check the <code>CATEGORY_FIX_GUIDE.md</code> file for detailed troubleshooting.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateEnvFile() {
+            const url = document.getElementById('supabaseUrl').value.trim();
+            const key = document.getElementById('supabaseKey').value.trim();
+            const output = document.getElementById('envOutput');
+
+            if (!url || !key) {
+                output.innerHTML = '<div class="alert alert-warning">⚠️ Please fill in both fields above</div>';
+                return;
+            }
+
+            if (!url.startsWith('https://') || !url.includes('.supabase.co')) {
+                output.innerHTML = '<div class="alert alert-warning">⚠️ URL should look like: https://xxxxx.supabase.co</div>';
+                return;
+            }
+
+            if (!key.startsWith('eyJ')) {
+                output.innerHTML = '<div class="alert alert-warning">⚠️ Key should start with "eyJ"</div>';
+                return;
+            }
+
+            const envContent = `REACT_APP_SUPABASE_URL=${url}
+REACT_APP_SUPABASE_ANON_KEY=${key}`;
+
+            output.innerHTML = `
+                <div class="alert alert-success">
+                    <strong>✅ .env file content generated!</strong>
+                    <p style="margin-top: 10px;">Copy the content below and save it as <code>frontend/.env</code></p>
+                </div>
+                <div class="code-block" style="user-select: all; cursor: pointer;" onclick="copyToClipboard(this.textContent)">
+${envContent}
+                </div>
+                <button class="btn" style="margin-top: 10px;" onclick="copyToClipboard(\`${envContent}\`)">📋 Copy to Clipboard</button>
+            `;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Copied to clipboard! Now paste it into frontend/.env');
+            }).catch(err => {
+                alert('⚠️ Could not copy. Please select and copy manually.');
+            });
+        }
+    </script>
+</body>
+</html>
