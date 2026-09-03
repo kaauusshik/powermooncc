@@ -1,0 +1,142 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║          🚨 EXPENSES ERROR - QUICK DIAGNOSTIC CHECKLIST              ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Error: "Unable to save expenses. Please check your connection."
+Only affects: Expenses section
+Time: 2026-09-03 16:07 UTC
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ IMMEDIATE CHECKS (Do These NOW):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ❓ Did you update the API key in .env?
+
+   Check: frontend/.env
+
+   ❌ Wrong:  sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9
+   ✅ Right:  eyJhbGci... (long JWT token)
+
+   If WRONG: Open get-correct-key.html → follow guide
+
+2. ❓ Did you run the database migration?
+
+   Check: Supabase → Table Editor → Look for "expenses" table
+
+   ❌ Not there: Run supabase/migration.sql in SQL Editor
+   ✅ There: Good, move to next check
+
+3. ❓ Did you restart the app after changing .env?
+
+   ❌ No: Run: npm start
+   ✅ Yes: Good, move to next check
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 BROWSER CONSOLE CHECK (Critical!):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Press F12 (open Developer Tools)
+2. Click "Console" tab
+3. Try to add an expense
+4. Look for RED error messages
+
+What does it say?
+
+→ "relation 'expenses' does not exist"
+  FIX: Run supabase/migration.sql
+
+→ "violates check constraint"
+  FIX: Run supabase/add_payment_category.sql
+
+→ "Invalid API key" or "401"
+  FIX: Update .env with correct anon key
+
+→ "null value in column 'project_id'"
+  FIX: Make sure to select a project in the form
+
+→ Something else?
+  Share the error message!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 COMPLETE FIX SEQUENCE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Do ALL steps in order:
+
+[ ] Step 1: Get correct API key
+    • Go to: Supabase → Settings → API
+    • Copy: "anon public" key (starts with eyJ)
+    • Update: frontend/.env
+    • Save file
+
+[ ] Step 2: Run main migration
+    • Go to: Supabase → SQL Editor
+    • Copy: entire supabase/migration.sql
+    • Paste and Run
+    • Wait for: "Success"
+
+[ ] Step 3: Run payment migration
+    • In SQL Editor
+    • Copy: entire supabase/add_payment_category.sql
+    • Paste and Run
+    • Wait for: "Success"
+
+[ ] Step 4: Restart app
+    • Stop app (Ctrl+C)
+    • Run: npm start
+    • Wait for app to open
+
+[ ] Step 5: Sign up
+    • First user = Owner
+    • Full Name, Email, Password
+    • Submit
+
+[ ] Step 6: Create a project
+    • Go to Projects page
+    • Add a project
+    • Save it
+
+[ ] Step 7: Try adding expense
+    • Go to Expenses
+    • Click + Add Expense
+    • Select PROJECT (required!)
+    • Select CATEGORY (required!)
+    • Enter AMOUNT (required!)
+    • Click Save
+    • ✅ Should work!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 MOST LIKELY ISSUE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Based on what we know:
+
+1. ⚠️  API key is WRONG format (sb_publishable_ instead of eyJ)
+2. ⚠️  Database migration probably NOT run
+3. ⚠️  App not restarted after .env change
+
+Fix these THREE things and it will work! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 HELPFUL FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• get-correct-key.html - Visual guide for API key
+• FIX_EXPENSES_ERROR.txt - Detailed troubleshooting
+• HOW_TO_ADD_PAYMENT_SUPABASE.txt - Payment category guide
+• FINAL_STATUS_REPORT.txt - Complete project status
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏱️ TIME ESTIMATE: 10 minutes to fix everything
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  1. Fix API key  2. Run migrations  3. Restart app  4. Test          ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Current Time: 2026-09-03 16:08 UTC

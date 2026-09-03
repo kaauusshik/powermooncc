@@ -1,0 +1,186 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║         HOW TO ADD "PAYMENT" CATEGORY TO SUPABASE DATABASE          ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+📌 IMPORTANT: "Payment" is NOT a new table!
+   It's a new CATEGORY OPTION in the existing "expenses" table.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Go to Supabase SQL Editor
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open your Supabase dashboard:
+   https://supabase.com/dashboard/project/pddybafnmwkdzlqdhvra
+
+2. Click on "SQL Editor" in the left sidebar (icon: </> or database icon)
+
+3. Click "New Query" button (top right)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 2: Run the Payment Category Migration
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Copy and paste this SQL code into the editor:
+
+┌────────────────────────────────────────────────────────────────────┐
+│                                                                    │
+│   -- Add "payment" to expense categories constraint               │
+│                                                                    │
+│   -- Step 1: Drop the old constraint                              │
+│   ALTER TABLE public.expenses                                     │
+│   DROP CONSTRAINT IF EXISTS expenses_category_check;              │
+│                                                                    │
+│   -- Step 2: Add new constraint with "payment" included           │
+│   ALTER TABLE public.expenses                                     │
+│   ADD CONSTRAINT expenses_category_check                          │
+│   CHECK (category IN (                                            │
+│     'labor',                                                      │
+│     'material',                                                   │
+│     'contractor',                                                 │
+│     'transportation',                                             │
+│     'payment',                                                    │
+│     'food',                                                       │
+│     'travel',                                                     │
+│     'hotel',                                                      │
+│     'equipment',                                                  │
+│     'other'                                                       │
+│   ));                                                             │
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
+
+4. Click "Run" button (or press Ctrl+Enter / Cmd+Enter)
+
+5. Wait for success message: "Success. No rows returned"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ALTERNATIVE: Use the Migration File
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open the file: supabase/add_payment_category.sql
+2. Copy the entire content
+3. Paste into Supabase SQL Editor
+4. Click "Run"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT THIS DOES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before:
+   expenses table allows these categories:
+   ✅ labor, material, contractor, transportation, food, travel,
+      hotel, equipment, other
+   ❌ payment (NOT allowed - will get error)
+
+After:
+   expenses table allows these categories:
+   ✅ labor, material, contractor, transportation, payment, food,
+      travel, hotel, equipment, other
+   ✅ payment (NOW allowed - will save successfully)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VERIFICATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After running the SQL, verify it worked:
+
+1. In Supabase, go to "Table Editor"
+2. Click on "expenses" table
+3. Look at the structure/schema
+4. Find the "category" column
+5. Check the constraint - should include "payment"
+
+OR
+
+Try adding an expense with "payment" category:
+1. Start your app
+2. Go to Expenses page
+3. Add expense with category = "payment"
+4. ✅ Should save successfully (no error)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VISUAL GUIDE (Step by Step):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Supabase Dashboard
+   ↓
+2. SQL Editor (left sidebar)
+   ↓
+3. New Query
+   ↓
+4. Paste SQL code (from above)
+   ↓
+5. Click "Run" (or Ctrl+Enter)
+   ↓
+6. See "Success. No rows returned" ✅
+   ↓
+7. Done! Payment category now works
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TROUBLESHOOTING:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Error: "relation 'expenses' does not exist"
+→ You haven't run the main migration yet
+→ Run: supabase/migration.sql first
+
+Error: "constraint does not exist"
+→ This is OK! The constraint might not exist yet
+→ The migration handles this with "IF EXISTS"
+
+Error: "permission denied"
+→ Make sure you're the project owner in Supabase
+→ Try refreshing the page and running again
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FULL MIGRATION SEQUENCE (If Starting Fresh):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you haven't run ANY migrations yet, run them in this order:
+
+1. First: supabase/migration.sql
+   (Creates all tables including expenses)
+   Time: ~5 seconds
+
+2. Then: supabase/add_payment_category.sql
+   (Adds "payment" to expense categories)
+   Time: ~1 second
+
+Both in Supabase SQL Editor → Copy → Paste → Run
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AFTER RUNNING THE MIGRATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ "payment" category is now available
+✅ Your app already has the code updated
+✅ Category dropdown will show "payment"
+✅ You can save expenses with "payment" category
+✅ No errors when adding payment expenses
+
+No need to restart the app - just refresh the page!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUICK REFERENCE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File Location: supabase/add_payment_category.sql
+What it does: Updates expenses table constraint
+Where to run: Supabase SQL Editor
+Time: 1-2 seconds
+Result: "payment" category works
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  TL;DR: Copy SQL from above → Paste in Supabase SQL Editor → Run    ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Last Updated: 2026-09-03 16:05 UTC
