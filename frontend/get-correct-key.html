@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Correct Supabase Key</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .content { padding: 30px; }
+        .alert {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+        }
+        .alert-error {
+            background: #fee;
+            border-color: #c33;
+            color: #822;
+        }
+        .alert-success {
+            background: #efe;
+            border-color: #3c3;
+            color: #282;
+        }
+        .alert-info {
+            background: #eef;
+            border-color: #33c;
+            color: #228;
+        }
+        .step {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .step h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .screenshot {
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+            margin: 15px 0;
+        }
+        .key-example {
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .comparison-item {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .correct { background: #c6f6d5; border: 3px solid #38a169; }
+        .wrong { background: #fed7d7; border: 3px solid #c53030; }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+        .btn:hover { opacity: 0.9; }
+        code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        ol { margin-left: 20px; }
+        li { margin-bottom: 12px; line-height: 1.6; }
+        strong { color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚠️ Wrong API Key Format</h1>
+            <p>Let's get the correct Supabase anon key</p>
+        </div>
+
+        <div class="content">
+            <div class="alert alert-error">
+                <h3 style="margin-bottom: 10px;">❌ Current Problem:</h3>
+                <p>Your .env file has the wrong key format:</p>
+                <div class="key-example" style="background: #fee; color: #c33;">
+sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9
+                </div>
+                <p><strong>This is NOT the anon key!</strong> This format won't work with the app.</p>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-item wrong">
+                    <h3 style="color: #c53030;">❌ WRONG</h3>
+                    <p style="margin-top: 10px; font-size: 14px;">Starts with:</p>
+                    <code style="background: white;">sb_publishable_</code>
+                    <p style="margin-top: 10px; font-size: 12px;">This is a different type of key</p>
+                </div>
+                <div class="comparison-item correct">
+                    <h3 style="color: #38a169;">✅ CORRECT</h3>
+                    <p style="margin-top: 10px; font-size: 14px;">Starts with:</p>
+                    <code style="background: white;">eyJ</code>
+                    <p style="margin-top: 10px; font-size: 12px;">This is the anon JWT key</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <h2>Step 1: Go to Your Supabase Project</h2>
+                <a href="https://supabase.com/dashboard/project/pddybafnmwkdzlqdhvra" target="_blank" class="btn">
+                    🔗 Open Your Project Dashboard
+                </a>
+                <p style="margin-top: 15px;">Or manually go to: <code>https://supabase.com/dashboard/project/pddybafnmwkdzlqdhvra</code></p>
+            </div>
+
+            <div class="step">
+                <h2>Step 2: Navigate to API Settings</h2>
+                <ol>
+                    <li>Look at the <strong>left sidebar</strong></li>
+                    <li>Click the <strong>⚙️ Settings</strong> icon (gear icon at the bottom)</li>
+                    <li>In the settings menu, click <strong>API</strong></li>
+                </ol>
+            </div>
+
+            <div class="step">
+                <h2>Step 3: Find "Project API keys"</h2>
+                <p>You'll see a section called <strong>"Project API keys"</strong> with two keys:</p>
+
+                <div class="screenshot">
+                    <h4 style="color: #38a169; margin-bottom: 10px;">✅ USE THIS ONE:</h4>
+                    <p><strong>anon</strong> <span style="color: #666;">public</span></p>
+                    <div class="key-example">
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZHliYWZubXdrZHpscWRodnJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTU2NDU2ODgsImV4cCI6MjAxMTIyMTY4OH0...
+                    </div>
+                    <button onclick="alert('Click the Copy button in Supabase dashboard')" style="padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">📋 Copy (in Supabase)</button>
+                </div>
+
+                <div class="screenshot" style="border-color: #c53030;">
+                    <h4 style="color: #c53030; margin-bottom: 10px;">❌ DON'T USE THIS ONE:</h4>
+                    <p><strong>service_role</strong> <span style="color: #666;">secret</span></p>
+                    <div class="key-example" style="background: #fee; color: #666;">
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZHliYWZubXdrZHpscWRodnJhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5NTY0NTY4OCwiZXhwIjoyMDExMjIxNjg4fQ...
+                    </div>
+                    <p style="color: #c53030; margin-top: 10px;"><strong>⚠️ Keep this secret! Never use in frontend!</strong></p>
+                </div>
+            </div>
+
+            <div class="step">
+                <h2>Step 4: Copy the Anon Key</h2>
+                <ol>
+                    <li>Find the <strong>anon public</strong> key (first one)</li>
+                    <li>Click the <strong>📋 Copy</strong> button next to it</li>
+                    <li>The key is now in your clipboard</li>
+                </ol>
+                <div class="alert alert-info">
+                    <strong>💡 How to identify it:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>✅ Starts with <code>eyJ</code></li>
+                        <li>✅ Very long (200+ characters)</li>
+                        <li>✅ Has dots separating three parts</li>
+                        <li>✅ Labeled as "anon" not "service_role"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <h2>Step 5: Update Your .env File</h2>
+                <ol>
+                    <li>Open <code>frontend/.env</code> in your code editor</li>
+                    <li>Find the line: <code>REACT_APP_SUPABASE_ANON_KEY=...</code></li>
+                    <li>Replace everything after the <code>=</code> with your copied key</li>
+                    <li>Should look like this:</li>
+                </ol>
+                <div class="key-example">
+REACT_APP_SUPABASE_URL=https://pddybafnmwkdzlqdhvra.supabase.co
+REACT_APP_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh...
+                </div>
+                <p style="margin-top: 10px;"><strong>4. Save the file</strong> (Ctrl+S / Cmd+S)</p>
+            </div>
+
+            <div class="step">
+                <h2>Step 6: Restart the App</h2>
+                <div class="key-example">
+cd frontend
+npm start
+                </div>
+                <p style="margin-top: 15px;">The app will now connect to Supabase correctly! ✅</p>
+            </div>
+
+            <div class="alert alert-success">
+                <h3 style="margin-bottom: 10px;">✅ How to Verify It's Working:</h3>
+                <ol style="margin-top: 10px;">
+                    <li>App starts without errors</li>
+                    <li>You can sign up / log in</li>
+                    <li>Settings → Master Data shows categories</li>
+                    <li>You can add expenses without errors</li>
+                </ol>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                <p><strong>Need more help?</strong></p>
+                <p style="margin-top: 10px;">Check <code>CHECK_API_KEY.txt</code> for detailed instructions</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

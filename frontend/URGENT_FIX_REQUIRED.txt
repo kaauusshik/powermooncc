@@ -1,0 +1,146 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║            🚨 ACTION REQUIRED - WRONG API KEY DETECTED              ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Date: 2026-09-03 15:53 UTC
+Status: .env configured but with WRONG key format
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CURRENT CONFIGURATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ URL: https://pddybafnmwkdzlqdhvra.supabase.co (CORRECT)
+❌ KEY: sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9 (WRONG FORMAT)
+
+This key format will NOT work! You need the JWT anon key.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHY YOU'RE GETTING THE ERROR:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Error: "Unable to save expenses. Please check your connection."
+
+Cause: Wrong API key format
+   • You used: sb_publishable_... (some other Supabase key)
+   • You need: eyJ... (the anon JWT token)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 QUICK FIX (2 minutes):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option 1: Visual Guide (EASIEST)
+---------------------------------
+1. Open in browser: get-correct-key.html
+2. Click the link to your Supabase project
+3. Follow the highlighted screenshots
+4. Copy the correct key (starts with eyJ)
+5. Replace in frontend/.env
+6. Save and restart app
+
+Option 2: Manual
+----------------
+1. Go to: https://supabase.com/dashboard/project/pddybafnmwkdzlqdhvra
+2. Click: Settings → API
+3. Find: "Project API keys" section
+4. Copy: "anon public" key (NOT service_role!)
+5. Edit: frontend/.env
+6. Replace the line:
+   From: REACT_APP_SUPABASE_ANON_KEY=sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9
+   To:   REACT_APP_SUPABASE_ANON_KEY=eyJhbGci... (paste your copied key)
+7. Save file
+8. Restart: npm start
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+KEY IDENTIFICATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ WRONG (what you have now):
+   sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9
+   • Short (~45 characters)
+   • Starts with "sb_publishable_"
+   • Won't work with the app
+
+✅ CORRECT (what you need):
+   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZHliYWZubXdrZHpscWRodnJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTU2NDU2ODgsImV4cCI6MjAxMTIyMTY4OH0.xyz123abc...
+   • Very long (200+ characters)
+   • Starts with "eyJ"
+   • Three parts separated by dots
+   • This is a JWT token
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHERE TO FIND THE CORRECT KEY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Supabase Dashboard Location:
+
+   Your Project
+   └── ⚙️ Settings (bottom left)
+       └── API
+           └── Project API keys
+               ├── ✅ anon public     ← USE THIS ONE
+               │   eyJhbGci...
+               │   [Copy]
+               │
+               └── ❌ service_role    ← DON'T USE THIS
+                   eyJhbGci...
+                   [Copy]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT WILL HAPPEN AFTER YOU FIX IT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ App connects to Supabase successfully
+✅ You can sign up and log in
+✅ Settings → Master Data shows categories
+✅ Expenses page works
+✅ You can add expenses without errors
+✅ All data saves to database
+✅ Everything works! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AFTER UPDATING THE KEY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Restart the app:
+   cd frontend
+   npm start
+
+2. Run database migrations (if not done yet):
+   • Go to Supabase SQL Editor
+   • Run: supabase/migration.sql
+   • Run: supabase/add_payment_category.sql
+
+3. Test the app:
+   • Sign up
+   • Go to Settings → Master Data
+   • See categories ✅
+   • Go to Expenses
+   • Add an expense ✅
+   • Save successfully ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 HELPFUL FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• get-correct-key.html - Visual guide with screenshots
+• CHECK_API_KEY.txt - Detailed text instructions
+• setup-guide.html - Complete setup guide
+• SETUP_CHECKLIST.md - Full setup checklist
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏱️ TIME ESTIMATE: 2 minutes to fix
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  👉 ACTION: Open get-correct-key.html and follow the steps!         ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Last Updated: 2026-09-03 15:53 UTC

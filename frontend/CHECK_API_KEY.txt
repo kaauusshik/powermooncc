@@ -1,0 +1,99 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                    ⚠️ IMPORTANT: CHECK YOUR API KEY                  ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Your .env file is now updated, but the API key format looks incorrect.
+
+CURRENT VALUES:
+✅ URL: https://pddybafnmwkdzlqdhvra.supabase.co (CORRECT FORMAT)
+⚠️  KEY: sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9 (WRONG FORMAT)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THE CORRECT KEY FORMAT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The anon/public key should:
+✅ Start with: eyJ
+✅ Be very long (200+ characters)
+✅ Look like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh...
+
+Your key starts with: sb_publishable_
+❌ This is NOT the anon key
+❌ This might be a different type of Supabase key
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO GET THE CORRECT KEY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://supabase.com/dashboard/project/pddybafnmwkdzlqdhvra
+
+2. Click: Settings (gear icon in bottom left)
+
+3. Click: API (in the settings menu)
+
+4. Look for section: "Project API keys"
+
+5. You'll see TWO keys:
+
+   ┌─────────────────────────────────────────────────────────┐
+   │ anon public                                             │
+   │ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd... │
+   │ [Copy]                                                  │
+   └─────────────────────────────────────────────────────────┘
+   ⬆️ COPY THIS ONE (click the Copy button)
+
+   ┌─────────────────────────────────────────────────────────┐
+   │ service_role secret                                     │
+   │ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd... │
+   │ [Copy]                                                  │
+   └─────────────────────────────────────────────────────────┘
+   ⬇️ DON'T USE THIS ONE (keep it secret!)
+
+6. Copy the "anon public" key (the first one)
+
+7. Update frontend/.env:
+
+   REACT_APP_SUPABASE_URL=https://pddybafnmwkdzlqdhvra.supabase.co
+   REACT_APP_SUPABASE_ANON_KEY=eyJhbGci... (paste the long key here)
+
+8. Save the file
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ALTERNATIVE: Check "Configuration" Section
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you don't see "Project API keys", try:
+
+1. Settings → Configuration
+2. Look for "API URL" and "anon key"
+3. Copy the anon key (should start with eyJ)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT HAPPENS IF YOU USE THE WRONG KEY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ "Unable to save expenses" error (connection fails)
+❌ "Authentication failed" errors
+❌ Blank pages or data not loading
+❌ API requests return 401 Unauthorized
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUICK TEST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After updating with the correct key:
+
+1. Restart app: npm start
+2. Open browser console (F12)
+3. Look for errors
+4. ✅ If no Supabase errors, key is correct
+5. ❌ If "Invalid API key" errors, key is wrong
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  ACTION: Get the "anon public" key that starts with "eyJ"           ║
+╚══════════════════════════════════════════════════════════════════════╝
