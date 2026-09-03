@@ -6,7 +6,7 @@ import { money, fmtDate, today, titleCase, PAYMENT_METHODS, EXPENSE_CATEGORIES }
 const fields = [
   { name: "project_id", label: "Project", lookup: { table: "projects" }, required: true },
   { name: "date", label: "Date", type: "date", required: true, default: today },
-  { name: "category", label: "Category", lookup: { table: "expense_categories", byLabel: true, creatable: true }, newPlaceholder: "New expense category", placeholder: "Select or create category…", required: true },
+  { name: "category", label: "Category", type: "select", options: EXPENSE_CATEGORIES, required: true },
   { name: "work_category_id", label: "Work Category", lookup: { table: "work_categories", creatable: true }, newPlaceholder: "New work category name" },
   { name: "amount", label: "Amount (₹)", type: "number", required: true, min: 0.01 },
   { name: "payment_method", label: "Payment Method", type: "select", options: PAYMENT_METHODS, default: "cash" },
