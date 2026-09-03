@@ -1,0 +1,42 @@
+{
+  "summary": "Validated the migration.sql bug fixes reported by the user against a local Postgres 15 instance and executed the light frontend auth checks against the real Supabase project. All requested backend/database checks and frontend flows passed with zero failures.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "checks_executed": {
+    "migration_first_run": "PASS - psql exited 0, no ERROR lines (only expected DROP IF EXISTS NOTICEs)",
+    "migration_idempotent_second_run": "PASS - re-running migration.sql on same DB completed with exit 0 and no ERROR lines",
+    "local_smoke_test": "PASS - _local_smoke.sql ended with 'ALL DATABASE CHECKS PASSED'. Verified: auto profile creation with role owner, project code PMC-2026-001, attendance payable 875.00, atomic worker payment PAY-2026-00001 + mirrored labor expense EXP-2026-00001 + audit_logs row, duplicate idempotency-key correctly rejected, material purchase PO-2026-00001 (material_cost 70000 + transport 2000 = total 72000), Cement stock opening 50 + purchased 200 - used 180 = remaining 70, invoice INV-2026-00001 total 118000, quotation QTN-2026-00001 total 59000, and attendance/payment history preserved after worker archive",
+    "rls_enforcement": "PASS - As site_staff with no membership: saw 0 projects, 0 expenses, project insert blocked (permission denied by RLS with-check), self role escalation to owner blocked (0 rows updated / no-op). After owner added a project_members row for the staff user, staff could see the project (count=1)",
+    "frontend_login_flow": "PASS - Login with powermoontech@gmail.com / PowerMoon@2026 succeeded; app then rendered data-testid=setup-required 'Database setup required' screen as expected (real Supabase project has not had migration applied)",
+    "frontend_branding": "PASS - POWER MOON CONSTRUCTION / BY KUSIK visible on login screen",
+    "frontend_toggle_password": "PASS - clicking data-testid=toggle-password flipped input type from 'password' -> 'text'",
+    "frontend_signup_validation": "PASS - /signup renders; submitting mismatched passwords shows 'Passwords do not match.' toast (role=alert)",
+    "responsive_check": "PASS - Login rendered without horizontal overflow at 390x844 (mobile) and 1920x800 (desktop)"
+  },
+  "notes_on_local_grants": "On the LOCAL Postgres (via _local_stubs.sql), the 'authenticated' role has no default table GRANTs, so the RLS test also had to run: GRANT USAGE ON SCHEMA public + GRANT ALL ON ALL TABLES/SEQUENCES to authenticated. This is NOT an issue in real Supabase because Supabase pre-grants privileges on public to the authenticated/anon roles via ALTER DEFAULT PRIVILEGES. No change needed in migration.sql — only mentioning for context so the next testing agent doesn't get confused by 'permission denied' during local runs.",
+  "test_report_links": [
+    "/app/test_reports/rls_test.sql"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "migration.sql: helper functions is_member/can_write reference tables created later; the added 'set check_function_bodies = off' at the top is the correct fix and works.",
+    "set_invoice_no / set_quotation_no are cleanly separated per-table trigger functions — good fix over the shared set_doc_no crash.",
+    "next_number() correctly uses counters.value in ON CONFLICT / RETURNING.",
+    "The migration relies on Supabase's default GRANTs for the authenticated role. Consider adding explicit 'grant usage on schema public to authenticated, anon;' and 'grant select/insert/update/delete on all tables in schema public to authenticated;' at the end of migration.sql to be defensive against non-standard projects and to make the file portable to any Postgres/Supabase project."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "powermoontech@gmail.com / PowerMoon@2026 (real Supabase login works)",
+  "seed_data_creation": "Created transient local databases verify1/verify2/verify3 for dry runs; no data written to user's real Supabase project.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The reported bug ('relation public.project_members does not exist') is fully fixed. Migration is idempotent. Smoke SQL passes end-to-end. Frontend auth works and correctly shows the branded setup-required screen because the user's real Supabase project has not yet had migration.sql applied. If retesting locally, remember to GRANT privileges to the authenticated role after loading _local_stubs.sql because Supabase's default GRANTs are not simulated by the stubs.",
+  "rca of the issue": "Root cause was helper SQL functions (is_member/can_write) referencing public.project_members inside their bodies while the CREATE FUNCTION statements ran BEFORE project_members was created. Postgres validates function bodies at creation time by default (check_function_bodies=on) and raised 42P01. Fix: 'set check_function_bodies = off;' near top of migration.sql defers body validation until execution time, by which point all referenced tables exist. Two related fixes were also applied: next_number()'s ON CONFLICT/RETURNING was corrected to use counters.value, and the shared set_doc_no trigger (which crashed with 'record new has no field invoice_no' when attached to quotations) was split into dedicated set_invoice_no() and set_quotation_no() functions. All three fixes verified working."
+}

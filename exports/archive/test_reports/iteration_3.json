@@ -1,0 +1,98 @@
+{
+  "summary": "Iteration 3 end-to-end frontend testing against live Supabase (migration.sql applied, migration_phase3.sql NOT applied). Verified iteration-2 HIGH login regression fix, transaction drawer, inline custom work-category/material creation, form validation, branding, and confirmed phase-3 tables are missing. Found one HIGH frontend bug: /purchase-orders and /site-reports render endless skeleton loaders (never showing the friendly 'run migration_phase3.sql' notice) when the tables 404. Also confirmed iteration-2 LOW Recharts warning regression is NOT fully fixed — warnings still fire on dashboard load. Did not execute purchase-order or site-report functional flows because phase-3 SQL is not applied (per spec).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "supabase REST /rest/v1/purchase_orders and /daily_site_reports", "issue": "Tables 404 — migration_phase3.sql has not been applied to the live Supabase project. Spec allows skipping the PO and DSR functional flows in this case."},
+      {"endpoint": "supabase REST inline duplicate create for work_categories/materials", "issue": "POSTing a name that already exists returns 409 (unique constraint) but the UI does not surface a friendly 'name already exists' toast — the failure is silent to the user (only visible in devtools). Spec requires an informative message."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "PurchaseOrders page + SiteReports page (missing-table handling)",
+        "issue": "When the backing Supabase table returns 404, both /purchase-orders and /site-reports keep showing 5 skeleton loader rows indefinitely with 3+ console 404 errors and NEVER render the friendly 'this feature needs the phase-3 database update — please run supabase/migration_phase3.sql' notice that the spec (and Crud.jsx code comment) promise. This means an owner with an unmigrated project sees a broken-looking page instead of actionable guidance.",
+        "selector": "/purchase-orders, /site-reports",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Dashboard Recharts",
+        "issue": "REGRESSION of iteration-2 LOW: 'The width(-1) and height(-1) of chart should be greater than 0 …' console warnings still fire 4–8 times on every dashboard load, even when the two charts DO render with data. Suggests ResponsiveContainer is measured before layout is committed (needs minWidth={0}/minHeight={0} or aspect prop, or defer render until parent has non-zero size).",
+        "selector": "dashboard EXPENSE BREAKDOWN and SHARE OF SPEND charts",
+        "priority": "LOW"
+      },
+      {
+        "component": "CreatableLookup (inline '+' create)",
+        "issue": "Duplicate-name attempt swallows the Supabase 409 error with no toast/inline message — user sees the modal close/persist with no feedback. Should catch the unique-violation and toast 'A category/material with that name already exists.'",
+        "selector": "field-work_category_id-new-save, field-material_id-new-save",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Phase-3 modules (Purchase Orders + Daily Site Reports)",
+        "issue": "Cannot exercise workflow (create request → advance stages → receive, or create daily site report + PDF + one-per-day guard) because the underlying tables do not exist. Skipped per spec, but the UI's own missing-table fallback is broken (see HIGH bug above).",
+        "affected_selectors": ["/purchase-orders", "/site-reports"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Dashboard cards",
+        "issues": [
+          "With the existing single ₹1,000 cash expense and no incomes/opening cash on the human's TEST project, the CASH card shows ₹-1.0 K (negative). Numerically consistent, but negative-money cards should probably be styled with a red badge / warning tooltip to explain 'cash paid out exceeds cash in — set opening cash or record an income'. Currently the negative just sits next to positive cards with no visual cue that anything is wrong."
+        ]
+      }
+    ]
+  },
+  "regression_results": {
+    "iteration_2_HIGH_login_setup_required": "PASS — logged in with powermoontech@gmail.com / PowerMoon@2026, landed on data-testid=dashboard on both fresh login AND hard reload; data-testid=setup-required never appeared. Retry logic in AuthContext.loadProfile is working.",
+    "iteration_2_LOW_recharts_warnings": "FAIL (still present) — 4+ 'width(-1) and height(-1)' warnings on every dashboard load; charts DO render at correct size but the warning stream is still there. data-testid=charts-empty does render if there is no data (not directly verified this run because there IS data)."
+  },
+  "checks_executed": {
+    "login_and_dashboard": "PASS — dashboard renders, projects count, contract, received, expenses, outstanding, cash/upi/bank cards visible; recent transactions and smart alerts working.",
+    "branding": "PASS — 'POWER MOON CONSTRUCTION' + 'BY KUSIK' on sidebar, dashboard and login. Login footer shows '© 2026 Power Moon TechMed Pvt.Ltd, Bhubaneswar | Odisha. All rights reserved.'. Tab title 'POWER MOON CONSTRUCTION · by KUSIK' confirmed.",
+    "transaction_detail_drawer_expenses": "PASS — clicking an expense row opens data-testid=transaction-sheet showing tx-ref (EXP-2026-00001), tx-amount (₹1,000.00), category (Material), payment method (Cash), created/updated timestamps, and buttons tx-edit / tx-duplicate / tx-print / tx-archive all present and enabled. Did NOT execute the Duplicate save (would have created a real transaction on the human's project — avoided per agent context note).",
+    "inline_custom_work_category": "PASS — from /expenses → Add Expense → field-work_category_id-new-btn opens inline input, typing 'Waterproofing Work QA <ts>' and clicking new-save shows toast '\"…\" added.', auto-selects the newly created category in the picker, and the same category appears in the /transportation Work Category dropdown (verified: option list now contains the new name).",
+    "inline_custom_material": "PASS — same flow via field-material_id-new-btn created 'AAC Blocks QA <ts>', auto-selected in expense form, and appears at the top of /materials list tagged 'CUSTOM'. Seeded defaults confirmed = 16 (17 total after custom).",
+    "duplicate_inline_create_error_handling": "FAIL — attempting to add the SAME custom name a second time results in supabase 409 (unique_violation) but NO visible toast/error to the user. Silent failure.",
+    "expense_form_required_validation": "PASS — clicking form-save-btn on an empty New Expense form shows inline 'Required' under Project, 'Must be at least 0.01' under Amount, and a 'Please fix the highlighted fields.' error toast; nothing is saved.",
+    "purchase_orders_page": "SKIPPED (phase-3 SQL not applied) + FRONTEND BUG: page shows skeleton loaders forever instead of the friendly notice.",
+    "site_reports_page": "SKIPPED (phase-3 SQL not applied) + FRONTEND BUG: same as above.",
+    "projects_create": "PARTIAL — Add Project modal opens; form has NAME, CLIENT, CONTRACT AMOUNT, START/EXPECTED/ACTUAL dates, STATUS, PROGRESS %, OPENING CASH, DESCRIPTION. Test attempt used data-testid=field-contract_value which did NOT match the actual field id (field appears to be 'field-contract_amount' or similar), so save didn't persist. Not a product bug, just a test-selector mismatch — did not retry to avoid polluting the human's data. Verified TEST project already exists with code PMC-2026-001.",
+    "seeded_materials": "PASS — 16 default materials present (Bricks, Cement, Doors, Electrical Materials, Glass, Hardware, Paint, Pipes, Plumbing Materials, Sand, Steel, Stone, Tiles, Windows, Wires, Wood).",
+    "navigation_sidebar": "PASS — All 20 modules visible in sidebar (Dashboard, Projects, Expenses, Income, Deductions, Workers, Attendance, Worker Payments, Materials, Purchases & Stock, Purchase Orders, Businesses, Transportation, Daily Site Reports, Ledgers, Invoices, Quotations, Reports, Audit Log, Settings & Users)."
+  },
+  "not_executed_due_to_scope_or_data_safety": [
+    "Full dashboard/project math verification with 3 expenses + 2 incomes + 1 deduction on a fresh QA project (avoided creating heavy test data on the human's live Supabase without confirmation)",
+    "Workers + attendance + record_worker_payment RPC flow",
+    "Materials edit min/opening stock + full purchase + stock adjust remaining=70 check",
+    "Suppliers/Transportation/Ledgers/internal transfer math",
+    "Invoices + Quotations line-item math and PDF download",
+    "Reports selector cycle + export-pdf/excel/csv",
+    "Audit log diff viewer",
+    "Receipt upload to Supabase storage",
+    "Mobile/tablet layouts at 390x844 and 820x1180",
+    "Purchase Order + Daily Site Report workflows (phase-3 SQL not applied)"
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "HIGH: Fix the missing-table fallback in Crud.jsx / PurchaseOrders.jsx / SiteReports.jsx so that when Supabase returns 404 for purchase_orders / daily_site_reports the page renders the friendly 'phase-3 database update needed — please apply supabase/migration_phase3.sql' notice instead of endless skeletons + console 404s. Detect either PostgREST error code PGRST205 (relation does not exist) or HTTP 404 with a 'Not Found' body from the initial list-query.",
+    "HIGH: Guide the human user to apply /app/supabase/migration_phase3.sql to their live Supabase project (URL pddybafnmwkdzlqdhvra) so PO and DSR flows can be tested in the next iteration.",
+    "MEDIUM: In CreatableLookup save handler, catch unique-violation errors (Postgres code 23505 / PostgREST 409) and surface a toast like 'A work category / material named \"X\" already exists.' Currently the failure is silent.",
+    "LOW: Eliminate the Recharts 'width(-1) and height(-1)' console warnings — add minWidth={0}/minHeight={0} to the ResponsiveContainer or gate render on a measured non-zero size. Charts already render fine visually; only the warnings remain.",
+    "Nice-to-have: On dashboard, style negative cash/upi/bank card values (red pill + tooltip) so users understand why their card is negative when expenses exceed available cash."
+  ],
+  "critical_code_review_comments": [
+    "Crud.jsx claims to render a 'missing-table friendly notice' (per the review request's file-of-reference summary) but empirical result shows the page just keeps skeleton loaders on Supabase 404. Check the actual error-detection branch — it likely only catches error.message.includes('does not exist') and misses PostgREST 404 responses whose body is a JSON error object rather than a JS Error with that message.",
+    "CreatableLookup save handler needs a try/catch that inspects the Supabase response error.code === '23505' and surfaces a user-facing toast — otherwise duplicate names are silently swallowed.",
+    "Dashboard Recharts container is likely wrapped in a flex/grid whose first layout pass has width 0, causing the width(-1) warnings. This is a known React 18 + Recharts 2.x issue — pass minWidth={0} on ResponsiveContainer or use a useResizeObserver gate."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (no FastAPI; Supabase-only; auth+seeded data verified)", "frontend": "~70% of the enumerated regression + new-feature checks executed; of those, ~85% passed"},
+  "test_credentials": "powermoontech@gmail.com / PowerMoon@2026 — works, lands on dashboard.",
+  "seed_data_creation": "Created two lightweight custom lookup rows on the live Supabase project via inline-add-from-picker: work_category 'Waterproofing Work QA <timestamp>' and material 'AAC Blocks QA <timestamp>'. Did NOT create expenses, incomes, projects, workers, purchases, invoices, quotations, ledger transfers or any transactional data — the human's existing 'TEST' project (PMC-2026-001) and 'Kaushik Behura' profile are untouched. The two custom lookup rows can be archived by the human via Settings → Master Data if desired.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Login regression from iteration 2 is fully fixed — do NOT rerun that alone. HIGH-priority remaining bug: /purchase-orders and /site-reports show skeleton loaders forever when phase-3 tables are missing. Once the human applies migration_phase3.sql AND the missing-table notice is fixed, next agent should execute the full PORD/DSR workflow (create request → Approved → Ordered → Received (verify atomic stock+expense+purchase), Billed, Paid, plus double-receive rejection, and DSR one-report-per-project-per-day guard + branded PDF). Also outstanding: end-to-end dashboard/project-detail math with a fresh QA project (3 expenses + 2 incomes + 1 deduction), attendance + record_worker_payment RPC mirror, materials stock adjust remaining=70, invoices/quotations math, reports export, audit log diff, receipt upload, and mobile 390x844 / tablet 820x1180 responsive pass. The Projects form contract-amount field-testid is NOT 'field-contract_value' — inspect the DOM before writing that selector.",
+  "rca of the issue": "1) Missing-table skeleton bug — PurchaseOrders / SiteReports (via Crud.jsx) subscribe to a supabase list query; when Supabase returns HTTP 404 for a non-existent table, the query hook likely stores the error but the loading skeleton is only gated on data===undefined, so both data and error stay 'not-loaded' → skeleton forever. Fix: treat error state as terminal-loading and render the friendly notice when error?.code==='PGRST205' or the HTTP status is 404. 2) Recharts warnings — ResponsiveContainer measures its parent before layout; first render returns width=-1/-1 until ResizeObserver fires. Adding minWidth={0}/minHeight={0} or wrapping with a conditional {mounted && <Chart/>} suppresses it. 3) Silent duplicate — CreatableLookup .insert() error is not thrown; Supabase JS returns { data:null, error } object and the component only shows toast on success."
+}

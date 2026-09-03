@@ -1,0 +1,16 @@
+{
+  "short_name": "Power Moon",
+  "name": "POWER MOON CONSTRUCTION · by KUSIK",
+  "description": "Construction Management & Expense Tracking",
+  "icons": [
+    { "src": "favicon.ico", "sizes": "16x16 32x32 48x48 64x64 256x256", "type": "image/x-icon" },
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "logo192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "logo512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "apple-touch-icon.png", "type": "image/png", "sizes": "180x180" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#0b0e11"
+}

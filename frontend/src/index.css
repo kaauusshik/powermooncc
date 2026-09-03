@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap");
+
+@layer base {
+    :root {
+        --background: 220 30% 8%;
+        --foreground: 210 20% 98%;
+        --card: 220 28% 11%;
+        --card-foreground: 210 20% 98%;
+        --popover: 220 30% 12%;
+        --popover-foreground: 210 20% 98%;
+        --primary: 210 100% 56%;
+        --primary-foreground: 220 30% 8%;
+        --secondary: 220 20% 18%;
+        --secondary-foreground: 210 20% 98%;
+        --muted: 220 18% 16%;
+        --muted-foreground: 220 12% 62%;
+        --accent: 200 95% 50%;
+        --accent-foreground: 220 30% 8%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 220 18% 20%;
+        --input: 220 18% 20%;
+        --ring: 210 100% 56%;
+        --chart-1: 210 100% 56%;
+        --chart-2: 200 95% 50%;
+        --chart-3: 190 85% 55%;
+        --chart-4: 220 75% 60%;
+        --chart-5: 240 65% 62%;
+        --radius: 0.85rem;
+    }
+}
+
+@layer base {
+    * { @apply border-border; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+        @apply bg-background text-foreground;
+        margin: 0;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background-image:
+            radial-gradient(900px 500px at 12% -8%, hsl(210 100% 56% / 0.09), transparent 60%),
+            radial-gradient(800px 480px at 92% 4%, hsl(200 95% 50% / 0.08), transparent 60%);
+        background-attachment: fixed;
+    }
+    h1, h2, h3, h4, .font-display { font-family: "Sora", sans-serif; letter-spacing: -0.02em; }
+    .mono { font-family: "IBM Plex Mono", monospace; }
+    ::selection { background: hsl(210 100% 56% / 0.3); }
+}
+
+@layer components {
+    .panel {
+        @apply rounded-2xl border border-border/80 bg-card/70 backdrop-blur-xl;
+        box-shadow: 0 1px 0 hsl(0 0% 100% / 0.03) inset, 0 18px 40px -28px rgb(0 0 0 / 0.9);
+    }
+    .stat-value { @apply font-display text-2xl font-bold tracking-tight; }
+    .label-xs { @apply text-[11px] uppercase tracking-[0.14em] text-muted-foreground; }
+    .nav-item {
+        @apply flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors duration-150 hover:bg-secondary/70 hover:text-foreground;
+    }
+    .nav-item-active { @apply bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary; }
+    .table-row-hover { @apply transition-colors duration-150 hover:bg-secondary/40; }
+}
+
+.fade-up { animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: hsl(214 16% 24%); border-radius: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@layer base {
+    [data-debug-wrapper="true"] { display: contents !important; }
+}
