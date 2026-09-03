@@ -1,0 +1,172 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║              ⚠️  SUPABASE NOT CONFIGURED - ACTION REQUIRED          ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+❌ ERROR: "Unable to save expenses. Please check your connection."
+
+🔍 ROOT CAUSE:
+   Your .env file has PLACEHOLDER values, not real Supabase credentials!
+
+   Current .env file shows:
+   REACT_APP_SUPABASE_URL=https://your-project-id.supabase.co
+   REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here
+                               ^^^^^^^^^^^^^^^^^^^
+                               These are placeholders, not real values!
+
+✅ HOW TO FIX:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTION 1: Use Interactive Guide (EASIEST) ⭐
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open this file in your browser:
+   📂 setup-guide.html
+
+2. Follow the visual step-by-step guide:
+   • Create Supabase project (or use existing)
+   • Copy Project URL and anon key
+   • Paste them into the form
+   • Click "Generate .env File"
+   • Copy the generated content
+
+3. Open: frontend/.env
+
+4. Replace ALL content with the generated content
+
+5. Save the file
+
+6. Restart the app:
+   cd frontend
+   npm start
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTION 2: Manual Setup
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Get Supabase Credentials
+---------------------------------
+1. Go to: https://supabase.com
+2. Sign in (or create free account)
+3. Create a new project:
+   • Name: powermoon-construction
+   • Database Password: (choose a strong password)
+   • Region: (closest to you)
+4. Wait 2-3 minutes for project setup
+5. Go to: Settings → API
+6. Copy two values:
+   a) Project URL (looks like: https://abcdefgh.supabase.co)
+   b) anon public key (long string starting with "eyJ...")
+
+Step 2: Update .env File
+-------------------------
+1. Open: frontend/.env in your code editor
+
+2. Replace with YOUR actual values:
+
+REACT_APP_SUPABASE_URL=https://abcdefgh.supabase.co
+REACT_APP_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiY2RlZmdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTU2NDU2ODgsImV4cCI6MjAxMTIyMTY4OH0.xyz...
+
+   ⚠️  Replace "abcdefgh" with YOUR project ID
+   ⚠️  Replace the long "eyJ..." string with YOUR anon key
+
+3. Save the file (Ctrl+S / Cmd+S)
+
+Step 3: Run Database Migration
+-------------------------------
+1. In Supabase dashboard, click: SQL Editor
+2. Open file: supabase/migration.sql
+3. Copy ENTIRE file (all 880+ lines)
+4. Paste into Supabase SQL Editor
+5. Click: Run (or Ctrl+Enter)
+6. Wait for: "Success. No rows returned"
+
+Step 4: Run Payment Category Migration
+---------------------------------------
+1. In Supabase SQL Editor (same place)
+2. Open file: supabase/add_payment_category.sql
+3. Copy and paste into editor
+4. Click: Run
+5. Wait for success
+
+Step 5: Restart the App
+------------------------
+cd frontend
+npm start
+
+Step 6: Test
+------------
+1. Sign up (first user = Owner)
+2. Go to: Expenses
+3. Click: + Add Expense
+4. Fill in form
+5. Click: Save
+6. ✅ Should save successfully now!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔒 SECURITY NOTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Safe to use:
+   • Project URL (public)
+   • anon/public key (public)
+
+❌ NEVER use in frontend:
+   • service_role key (keep it secret!)
+   • Database password (keep it secret!)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧪 HOW TO VERIFY IT'S WORKING:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After updating .env and restarting:
+
+1. Open browser console (F12)
+2. Go to Network tab
+3. Try to add an expense
+4. Look for requests to your Supabase URL
+5. ✅ If you see requests, connection is working
+6. ❌ If no requests, .env file not configured correctly
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 CHECKLIST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before testing expenses:
+[ ] Supabase project created
+[ ] Project URL copied (starts with https://)
+[ ] anon key copied (starts with eyJ)
+[ ] frontend/.env file updated with REAL values
+[ ] File saved
+[ ] Database migration ran (supabase/migration.sql)
+[ ] Payment migration ran (supabase/add_payment_category.sql)
+[ ] App restarted (npm start)
+[ ] User signed up
+[ ] Logged in
+
+Now try adding expense:
+[ ] Expenses page loads
+[ ] + Add Expense opens form
+[ ] Category dropdown shows 10 options
+[ ] Form saves successfully ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 QUICK TIP:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The EASIEST way is to open setup-guide.html in your browser.
+It has a form where you paste your credentials and it generates
+the correct .env file for you!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  BOTTOM LINE: Replace placeholder values in .env with real ones!    ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Last Updated: 2026-09-03 15:45 UTC
