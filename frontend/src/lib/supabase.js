@@ -12,17 +12,8 @@ if (!url || !key) {
   throw new Error("Supabase URL or Key is missing. Check your .env file.");
 }
 
-// Warn if using invalid key format
-if (key.startsWith("sb_publishable_")) {
-  console.error("❌ INVALID SUPABASE KEY FORMAT!");
-  console.error("Your key starts with 'sb_publishable_' which is incorrect.");
-  console.error("Get the correct 'anon public' key from:");
-  console.error(`  ${url.replace('/rest/v1', '')}/project/settings/api`);
-  console.error("The correct key should start with 'eyJ' and be ~200 characters long.");
-  throw new Error("Invalid Supabase API key format. Must use 'anon public' key starting with 'eyJ'");
-}
-
 export const supabase = createClient(url, key, {
+  global: { headers: { apikey: key } },
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
 });
 
