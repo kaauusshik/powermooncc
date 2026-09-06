@@ -15,7 +15,7 @@ const Stat = ({ label, value, sub, tone = "default", testId }) => (
   </div>
 );
 
-const COLORS = ["#f5a524", "#2bb7a3", "#4a9df0", "#e26a4a", "#a06ad4", "#d4b74a", "#6ad4b0", "#8899aa"];
+const COLORS = ["#b89458", "#5f9e96", "#7194ad", "#ae7464", "#88799e", "#9e9863", "#719b8d", "#8899aa"];
 
 export default function Dashboard() {
   const { data, isLoading, error } = useFinance();
@@ -71,7 +71,7 @@ export default function Dashboard() {
                 <XAxis dataKey="name" tick={{ fill: "#8f9aa6", fontSize: 11 }} />
                 <YAxis tickFormatter={shortMoney} tick={{ fill: "#8f9aa6", fontSize: 11 }} width={70} />
                 <Tooltip formatter={(v) => money(v)} contentStyle={{ background: "#12161b", border: "1px solid #232a33", borderRadius: 12 }} />
-                <Bar dataKey="value" radius={[8, 8, 0, 0]} fill="#f5a524" />
+                <Bar dataKey="value" radius={[8, 8, 0, 0]} fill="#b89458" />
               </BarChart>
             </ResponsiveContainer>
           </div>

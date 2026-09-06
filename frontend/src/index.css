@@ -12,24 +12,24 @@
         --card-foreground: 210 20% 98%;
         --popover: 220 30% 12%;
         --popover-foreground: 210 20% 98%;
-        --primary: 210 100% 56%;
+        --primary: 205 48% 58%;
         --primary-foreground: 220 30% 8%;
         --secondary: 220 20% 18%;
         --secondary-foreground: 210 20% 98%;
         --muted: 220 18% 16%;
         --muted-foreground: 220 12% 62%;
-        --accent: 200 95% 50%;
+        --accent: 178 38% 50%;
         --accent-foreground: 220 30% 8%;
         --destructive: 0 72% 51%;
         --destructive-foreground: 0 0% 98%;
         --border: 220 18% 20%;
         --input: 220 18% 20%;
-        --ring: 210 100% 56%;
-        --chart-1: 210 100% 56%;
-        --chart-2: 200 95% 50%;
-        --chart-3: 190 85% 55%;
-        --chart-4: 220 75% 60%;
-        --chart-5: 240 65% 62%;
+        --ring: 205 48% 58%;
+        --chart-1: 205 48% 58%;
+        --chart-2: 178 38% 50%;
+        --chart-3: 190 42% 58%;
+        --chart-4: 220 38% 62%;
+        --chart-5: 240 32% 62%;
         --radius: 0.85rem;
     }
 }
@@ -43,13 +43,13 @@
         font-family: "IBM Plex Sans", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
         background-image:
-            radial-gradient(900px 500px at 12% -8%, hsl(210 100% 56% / 0.09), transparent 60%),
-            radial-gradient(800px 480px at 92% 4%, hsl(200 95% 50% / 0.08), transparent 60%);
+            radial-gradient(900px 500px at 12% -8%, hsl(205 48% 58% / 0.045), transparent 60%),
+            radial-gradient(800px 480px at 92% 4%, hsl(178 38% 50% / 0.035), transparent 60%);
         background-attachment: fixed;
     }
     h1, h2, h3, h4, .font-display { font-family: "Sora", sans-serif; letter-spacing: -0.02em; }
     .mono { font-family: "IBM Plex Mono", monospace; }
-    ::selection { background: hsl(210 100% 56% / 0.3); }
+    ::selection { background: hsl(205 48% 58% / 0.22); }
 }
 
 @layer components {

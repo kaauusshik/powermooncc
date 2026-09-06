@@ -8,7 +8,7 @@ if (!url || !key) {
   console.error("❌ Supabase configuration missing!");
   console.error("Check your .env file has:");
   console.error("  REACT_APP_SUPABASE_URL=https://pddybafnmwkdzlqdhvra.supabase.co");
-  console.error("  REACT_APP_SUPABASE_ANON_KEY=sb_publishable_DSBxiDuofaZr2MBZBNal8A_tMGHzDI9");
+  console.error("  REACT_APP_SUPABASE_ANON_KEY=<your Supabase anon key>");
   throw new Error("Supabase URL or Key is missing. Check your .env file.");
 }
 
