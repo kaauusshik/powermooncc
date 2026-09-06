@@ -49,7 +49,12 @@ export default function Expenses() {
       searchKeys={["ref_no", "description", "person_name", "paid_to", "bill_number"]}
       order={{ column: "date", ascending: false }}
       fields={fields}
-      buildPayload={(v) => clean(v, { numbers: ["amount"] })}
+      buildPayload={(v) => {
+        const payload = clean(v, { numbers: ["amount"] });
+        if (!payload.paid_to && payload.person_name) payload.paid_to = payload.person_name;
+        delete payload.person_name;
+        return payload;
+      }}
       columns={[
         { key: "ref_no", label: "Ref", render: (r) => <span className="mono text-xs text-primary">{r.ref_no}</span> },
         { key: "date", label: "Date", render: (r) => fmtDate(r.date) },
